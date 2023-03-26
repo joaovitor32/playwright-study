@@ -2,10 +2,10 @@
 import { useState } from 'react';
 
 interface HomeProps {
-  book: any;
+  pokemon: any;
 }
 
-export default function Home({ book }: HomeProps) {
+export default function Home({ pokemon }: HomeProps) {
   const [reviews, setReviews] = useState<any>(null);
 
   const handleGetReviews = () => {
@@ -16,16 +16,14 @@ export default function Home({ book }: HomeProps) {
 
   return (
     <div>
-      <img src={book.imageUrl} alt={book.title} width="250" />
-      <h1>{book.title}</h1>
-      <p>{book.description}</p>
-      <button onClick={handleGetReviews}>Load reviews</button>
+      <h1>{pokemon.name}</h1>
+      <button onClick={handleGetReviews}>Load more pokemons</button>
       {reviews && (
         <ul>
           {reviews.map((review: any) => (
             <li key={review.id}>
-              <p>{review.text}</p>
-              <p>{review.author}</p>
+              <p>{review.title}</p>
+              <p>{review.description}</p>
             </li>
           ))}
         </ul>
@@ -35,12 +33,12 @@ export default function Home({ book }: HomeProps) {
 }
 
 export async function getServerSideProps() {
-  const res = await fetch(`https://jsonkeeper.com/b/AFRW`);
-  const book = await res.json();
+  const res = await fetch(`https://pokeapi.co/api/v2/pokemon/1/`);
+  const pokemon = await res.json();
 
   return {
     props: {
-      book,
+      pokemon,
     },
   };
 }
