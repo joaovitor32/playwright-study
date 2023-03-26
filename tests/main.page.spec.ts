@@ -1,8 +1,9 @@
-import { test, expect } from '@playwright/test';
+import test from './next-fixture';
+import { expect } from '@playwright/test';
 
 test.describe('Main page tests', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3000');
+  test.beforeEach(async ({ page, port }) => {
+    await page.goto(`http://localhost:${port}`);
   });
 
   test('Has title', async ({ page }) => {

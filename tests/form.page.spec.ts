@@ -1,11 +1,12 @@
-import { test, expect } from '@playwright/test';
+import test from './next-fixture';
+import { expect } from '@playwright/test';
 
 const name = 'João Vitor Munizlopes';
 const email = 'joaovitormunizlopes@gmail.com';
 
 test.describe('Form page tests', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('http://localhost:3000/form');
+  test.beforeEach(async ({ page, port }) => {
+    await page.goto(`http://localhost:${port}/form`);
   });
 
   test('Check form error name on submission, --fail case', async ({ page }) => {

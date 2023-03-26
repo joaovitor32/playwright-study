@@ -11,7 +11,8 @@
     "playwright:headed": "npx playwright test --headed",
     "playwright:show-report": "npx playwright show-report",
     "playwright:trace": "npx playwright --trace on",
-    "playwright:codegen": "npx playwright codegen demo.playwright.dev/todomvc"
+    "playwright:codegen": "npx playwright codegen demo.playwright.dev/todomvc",
+    "test:skipbuild": "set SKIP_BUILD=1 && playwright test"
   },
   "dependencies": {
     "@types/node": "18.15.3",
