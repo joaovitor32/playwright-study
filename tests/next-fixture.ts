@@ -5,10 +5,15 @@ import { test as base } from '@playwright/test';
 import next from 'next';
 import path from 'path';
 import { AddressInfo } from 'net';
+import { rest } from 'msw';
+import type { SetupServerApi } from 'msw/node';
 // Extend base test with our fixtures.
 const test = base.extend<{
   port: string;
+  requestInterceptor: SetupServerApi;
+  rest: typeof rest;
 }>({
+  // the port function is the same as before
   port: [
     async ({}, use) => {
       const app = next({
@@ -28,7 +33,6 @@ const test = base.extend<{
           resolve(server);
         });
       });
-      // get the randomly assigned port from the server
       const port = String((server.address() as AddressInfo).port);
       // provide port to tests
       await use(port);
@@ -36,8 +40,22 @@ const test = base.extend<{
     {
       //@ts-ignore
       scope: 'worker',
+      auto: true,
     },
   ],
+  requestInterceptor: [
+    async ({}, use) => {
+      // Import requestInterceptor from the built app so we
+      // can attach attach our mocks to it from each test
+      const { requestInterceptor } = require('../.next/server/pages/_app');
+      await use(requestInterceptor);
+    },
+    {
+      //@ts-ignore
+      scope: 'worker',
+    },
+  ],
+  rest,
 });
 // this "test" can be used in multiple test files,
 // and each of them will get the fixtures.
