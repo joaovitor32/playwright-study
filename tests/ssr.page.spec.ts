@@ -1,13 +1,15 @@
 import { expect } from '@playwright/test';
 import test from './next-fixture';
 
-test.describe('Mock request tests', () => {
-  test('Test client side mock request', async ({ page, port, requestInterceptor, rest }) => {
+const PokemonName = 'Pikachu';
+
+test.describe('Mock request tests, --success case', () => {
+  test.beforeEach(async ({ requestInterceptor, rest, page, port }) => {
     requestInterceptor.use(
       rest.get(`https://pokeapi.co/api/v2/pokemon/1/`, (req, res, ctx) =>
         res(
           ctx.json({
-            pokemon: 'Pikachu',
+            name: PokemonName,
           })
         )
       )
@@ -25,10 +27,16 @@ test.describe('Mock request tests', () => {
         ]),
       })
     );
-
+  });
+  test('Test client side mock request', async ({ page, port }) => {
     await page.goto(`http://localhost:${port}/ssr`);
     await page.click('button');
     const description = await page.innerText('ul li p');
     expect(description).toMatch(/^John Maverick/);
+  });
+  test('Test pokemon name title, --success case', async ({ page, port }) => {
+    await page.goto(`http://localhost:${port}/ssr`);
+
+    await expect(page.getByText(PokemonName)).toBeVisible();
   });
 });

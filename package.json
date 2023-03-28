@@ -10,7 +10,7 @@
     "playwright:test": "npx playwright test",
     "playwright:headed": "npx playwright test --headed",
     "playwright:show-report": "npx playwright show-report",
-    "playwright:trace": "npx playwright --trace on",
+    "playwright:trace": "npx playwright show-trace trace.zip",
     "playwright:codegen": "npx playwright codegen demo.playwright.dev/todomvc",
     "test:skipbuild": "set SKIP_BUILD=1 && playwright test"
   },

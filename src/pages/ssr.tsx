@@ -16,7 +16,7 @@ export default function Home({ pokemon }: HomeProps) {
 
   return (
     <div>
-      <h1>{pokemon.name}</h1>
+      <h1 data-testid="pokemon-name-title">{pokemon.name}</h1>
       <button onClick={handleGetReviews}>Load more pokemons</button>
       {reviews && (
         <ul>
